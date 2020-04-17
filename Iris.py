@@ -1,3 +1,4 @@
+# imports
 import pandas
 import numpy
 import matplotlib.pyplot as plt
@@ -59,7 +60,19 @@ while ans == 'y':  # while ans is y
     ttrain = numpy.hstack((ttrain, t[50:90], t[100:140]))  # extending the array
     ttest = t[40:50]  # initializing the xtest array
     ttest = numpy.hstack((ttest, t[90:100], t[140:150]))  # extending the array
-    plt.plot(xtrain[:, 0], xtrain[:, 2], 'b.')
-    plt.plot(xtest[:, 0], xtest[:, 2], 'r.')
-    plt.title('xtrain ttest patterns')
-    plt.show()
+    plt.plot(xtrain[:, 0], xtrain[:, 2], 'b.')  # creating the diagrams
+    plt.plot(xtest[:, 0], xtest[:, 2], 'r.')  # creating the diagrams
+    plt.title('xtrain ttest patterns')  # giving a title to our graph
+    plt.show()  # showing the graph
+    while True:
+        print('1. Υλοποίηση με Perceptron\n' +
+              '2. Υλοποίηση με Adaline\n' +
+              '3. Υλοποίηση με Λύση Ελαχίστων Τετραγώνων\n' +
+              '4. Επιστροφή στο αρχικό Menu')  # printing the available options
+        userInput = int(raw_input())  # user input
+        if userInput == 4:  # if userInput is 4, we break the while
+            break
+        elif userInput == 1:
+            maxepochs = int(raw_input('Max Epochs:'))
+            beta = float(raw_input('Beta:'))
+            perceptron(xtrain, ttrain, maxepochs, beta)
