@@ -152,6 +152,26 @@ if __name__ == '__main__':
                     else:
                         predict[i] = 1  # giving the proper value
                 plt.figure()  # creating new figure
-                plt.plot(predict, 'ro', ttrain2, 'b.')  # red circles for the predict array and blue dots for the ttrain2 array
+                plt.plot(predict, 'ro', ttrain2,
+                         'b.')  # red circles for the predict array and blue dots for the ttrain2 array
                 plt.title('least square solution view')  # just the title of our plt figure
                 plt.show()  # showing our plt figure
+                # edw stamatise o kosmos
+                xtest2 = numpy.linalg.pinv(xtest.astype(float))  # pinv = pseudo inverse
+                w2 = numpy.zeros(len(xtest[0]))  # giving 0 to the w array
+                predict2 = numpy.zeros(len(xtest))  # initializing
+                for i in range(len(w2)):  # for each of the 4 elements in our w array
+                    w2[i] = sum(xtest2[i, j] * ttest2[j] for j in range(len(xtest)))  # finding the weights
+                for i in range(len(xtest)):  # for each pattern
+                    u = sum(w2[j] * xtest[i, j] for j in range(len(w2)))  # initializing the stimulation
+                    if u < 0:
+                        print(u)
+                        predict2[i] = -1  # giving the proper value
+                    else:
+                        print(u)
+                        predict2[i] = 1  # giving the proper value
+                plt.figure()  # creating new figure
+                plt.plot(predict2, 'ro', ttest2, 'b.')  # red circles for the predict array and blue dots for the ttrain2 array
+                plt.title('least square solution view')  # just the title of our plt figure
+                plt.show()  # showing our plt figure
+
