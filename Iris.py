@@ -35,7 +35,7 @@ def adaline(x, t, maxepochs, beta, minmse):
     epoch = 1  # initializing the epoch
     u = numpy.zeros(len(x))  # initializing the u array
     predict = numpy.zeros(len(x))  # initializing the predict list
-    while (maxepochs >= epoch):
+    while maxepochs >= epoch:
         error = 0
         for i in range(len(x)):  # for each i in x len
             u[i] = sum(w[j] * x[i, j] for j in range(len(x[0])))  # finding the stimulation
@@ -48,6 +48,11 @@ def adaline(x, t, maxepochs, beta, minmse):
                 w[j] = w[j] + beta * (t[i] - predict[i]) * x[i, j]  # giving new value to our w
         if error / len(x) <= minmse:
             break
+        epoch += 1
+    plt.figure()  # creating new figure
+    plt.plot(predict, 'ro', t, 'b.')  # red circles for the predict array and blue dots for the t array
+    plt.title('adaline view')  # just the title of our plt figure
+    plt.show()  # showing our plt figure
 
 
 if __name__ == '__main__':
@@ -130,4 +135,23 @@ if __name__ == '__main__':
                 maxepochs = int(raw_input('Max Epochs:'))  # max seasons
                 beta = float(raw_input('Beta:'))  # beta variable
                 minmse = float(raw_input('MinMSE:'))  # minmse input
-                adaline(xtrain, ttrain2, maxepochs, beta, minmse)
+                adaline(xtrain, ttrain2, maxepochs, beta, minmse)  # calling the adaline for both xtrain and ttrain
+                adaline(xtest, ttest2, maxepochs, beta, minmse)  # and xtest, ttest
+            elif userInput == 3:
+                ttrain2 = [i if i != 0 else -1 for i in ttrain]  # changing 0 values to -1
+                ttest2 = [i if i != 0 else -1 for i in ttest]  # changing 0 values to -1
+                xtrain2 = numpy.linalg.pinv(xtrain.astype(float))  # pinv = pseudo inverse
+                w = numpy.zeros(len(xtrain[0]))  # giving 0 to the w array
+                predict = numpy.zeros(len(xtrain))  # initializing
+                for i in range(len(w)):  # for each of the 4 elements in our w array
+                    w[i] = sum(xtrain2[i, j] * ttrain2[j] for j in range(len(xtrain)))  # finding the weights
+                for i in range(len(xtrain)):  # for each pattern
+                    u = sum(w[j] * xtrain[i, j] for j in range(len(w)))  # initializing the stimulation
+                    if u < 0:
+                        predict[i] = -1  # giving the proper value
+                    else:
+                        predict[i] = 1  # giving the proper value
+                plt.figure()  # creating new figure
+                plt.plot(predict, 'ro', ttrain2, 'b.')  # red circles for the predict array and blue dots for the ttrain2 array
+                plt.title('least square solution view')  # just the title of our plt figure
+                plt.show()  # showing our plt figure
