@@ -24,7 +24,13 @@ def perceptron(x, t, maxepochs, beta):  # perceptron function
                 for j in range(0, len(w)):  # for each w
                     w[j] = w[j] + beta * (t[i] - predict[i]) * x[i, j]  # giving new value to our w
                 flag = True  # if we find an error, we make the flag true again
-        
+        epoch += 1
+    print(' i am here')
+    plt.figure()  # creating new figure
+    plt.plot(predict, 'ro', t, 'b.')  # red circles for the predict array and blue dots for the t array
+    plt.title('perceptron view')  # just the title of our plt figure
+    plt.show()  # showing our plt figure
+    return w  # returning the w
 
 
 if __name__ == '__main__':
