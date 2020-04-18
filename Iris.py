@@ -6,13 +6,12 @@ from pip._vendor.distlib.compat import raw_input
 
 
 def perceptron(x, t, maxepochs, beta):  # perceptron function
-    #  w = numpy.random.uniform(low=-1, high=1, size=len(x[0]))
     w = numpy.random.randn(len(x[0]), 1)  # filling the w by random numbers
     flag = True  # initializing the flag
     epoch = 1  # initializing the epoch
     u = numpy.zeros(len(x))  # initializing the u array
     predict = numpy.zeros(len(x))  # initializing the predict list
-    while maxepochs >= epoch & flag:
+    while (maxepochs >= epoch) & flag:
         flag = False
         for i in range(len(x)):  # for each i in x len
             u[i] = sum(w[j] * x[i, j] for j in range(len(x[0])))  # finding the stimulation
@@ -25,12 +24,30 @@ def perceptron(x, t, maxepochs, beta):  # perceptron function
                     w[j] = w[j] + beta * (t[i] - predict[i]) * x[i, j]  # giving new value to our w
                 flag = True  # if we find an error, we make the flag true again
         epoch += 1
-    print(' i am here')
     plt.figure()  # creating new figure
     plt.plot(predict, 'ro', t, 'b.')  # red circles for the predict array and blue dots for the t array
     plt.title('perceptron view')  # just the title of our plt figure
     plt.show()  # showing our plt figure
-    return w  # returning the w
+
+
+def adaline(x, t, maxepochs, beta, minmse):
+    w = numpy.random.randn(len(x[0]), 1)  # filling the w by random numbers
+    epoch = 1  # initializing the epoch
+    u = numpy.zeros(len(x))  # initializing the u array
+    predict = numpy.zeros(len(x))  # initializing the predict list
+    while (maxepochs >= epoch):
+        error = 0
+        for i in range(len(x)):  # for each i in x len
+            u[i] = sum(w[j] * x[i, j] for j in range(len(x[0])))  # finding the stimulation
+            if u[i] < 0:  # if u[0] is lower than 0
+                predict[i] = -1  # we give predict the value of 0
+            else:  # in any other case
+                predict[i] = 1  # we give predict the value of 1
+            error = error + (t[i] - predict[i]) ** 2  # adding the error for each loop
+            for j in range(0, len(w)):  # for each w
+                w[j] = w[j] + beta * (t[i] - predict[i]) * x[i, j]  # giving new value to our w
+        if error / len(x) <= minmse:
+            break
 
 
 if __name__ == '__main__':
@@ -66,16 +83,16 @@ if __name__ == '__main__':
         elif userInput == 2:  # for i from 0 to length of t
             map_dictionary = {  # creating dictionary 0 1 0
                 "Iris-setosa": 0,
-                "Iris-versicolor": 1,
-                "Iris-virginica": 0
+                "Iris-versicolor": 0,
+                "Iris-virginica": 1
             }
             for i in range(0, len(t)):
                 t[i] = map_dictionary[names.item(i)]  # did stuff that I cannot explain
         elif userInput == 3:  # for i from 0 to length of t
             map_dictionary = {  # creating dictionary 0 0 1
                 "Iris-setosa": 0,
-                "Iris-versicolor": 0,
-                "Iris-virginica": 1
+                "Iris-versicolor": 1,
+                "Iris-virginica": 0
             }
             for i in range(0, len(t)):
                 t[i] = map_dictionary[names.item(i)]  # did stuff that I cannot explain
@@ -103,6 +120,14 @@ if __name__ == '__main__':
             if userInput == 4:  # if userInput is 4, we break the while
                 break
             elif userInput == 1:
-                maxepochs = int(raw_input('Max Epochs:'))  #
-                beta = float(raw_input('Beta:'))
-                w = perceptron(xtrain, ttrain, maxepochs, beta)
+                maxepochs = int(raw_input('Max Epochs:'))  # max seasons
+                beta = float(raw_input('Beta:'))  # beta variable
+                perceptron(xtrain, ttrain, maxepochs, beta)  # calling the perceptron for both xtrain, ttrain
+                perceptron(xtest, ttest, maxepochs, beta)  # and xtest, ttest
+            elif userInput == 2:
+                ttrain2 = [i if i != 0 else -1 for i in ttrain]  # changing 0 values to -1
+                ttest2 = [i if i != 0 else -1 for i in ttest]  # changing 0 values to -1
+                maxepochs = int(raw_input('Max Epochs:'))  # max seasons
+                beta = float(raw_input('Beta:'))  # beta variable
+                minmse = float(raw_input('MinMSE:'))  # minmse input
+                adaline(xtrain, ttrain2, maxepochs, beta, minmse)
