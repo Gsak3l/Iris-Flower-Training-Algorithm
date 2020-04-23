@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from pip._vendor.distlib.compat import raw_input
 import sklearn.model_selection
 
+
 def perceptron(x, t, maxepochs, beta):  # perceptron function
     w = numpy.random.randn(len(x[0]), 1)  # filling the w by random numbers
     flag = True  # initializing the flag
@@ -129,6 +130,20 @@ if __name__ == '__main__':
                 beta = float(raw_input('Beta:'))  # beta variable
                 perceptron(xtrain, ttrain, maxepochs, beta)  # calling the perceptron for both xtrain, ttrain
                 perceptron(xtest, ttest, maxepochs, beta)  # and xtest, ttest
+                for i in range(9):
+                    x_train, x_test, t_train, t_test = sklearn.model_selection.train_test_split(x, t,
+                                                                                                test_size=0.1)  # train_test_split
+                    plt.figure()  # creating a new view or something
+                    plt.subplot(211)  # just like a plot, but different, rows, cols
+                    plt.plot(x_train[:, 0], x_train[:, 2], "b.")  # x, y, color
+                    plt.title("x_train with Train_Test_Split Perceptron")  # the title of our plt graph
+                    plt.subplot(211)  # just like a plot, but different, rows, cols
+                    plt.plot(x_test[:, 0], x_test[:, 2], "r.")  # x, y, color
+                    plt.title("x_test with Train_Test_Split Perceptron")  # the title of our plt graph
+                    plt.tight_layout()  # to make it appear normal
+                    plt.show()  # showing the graph
+                    perceptron(x_train, t_train, maxepochs, beta)  # calling the perceptron for both x_train, t_train
+                    perceptron(x_test, t_test, maxepochs, beta)  # calling the perceptron for both x_test, t_test
 
             elif userInput == 2:
                 ttrain2 = [i if i != 0 else -1 for i in ttrain]  # changing 0 values to -1
@@ -138,6 +153,24 @@ if __name__ == '__main__':
                 minmse = float(raw_input('MinMSE:'))  # minmse input
                 adaline(xtrain, ttrain2, maxepochs, beta, minmse)  # calling the adaline for both xtrain and ttrain
                 adaline(xtest, ttest2, maxepochs, beta, minmse)  # and xtest, ttest
+
+                for i in range(9):
+                    x_train, x_test, t_train, t_test = sklearn.model_selection.train_test_split(x, t,
+                                                                                                test_size=0.1)  # train_test_split
+                    t_train = [i if i != 0 else -1 for i in t_train]  # changing 0 values to -1
+                    t_test = [i if i != 0 else -1 for i in t_test]  # changing 0 values to -1
+                    plt.figure()  # creating a new view or something
+                    plt.subplot(211)  # just like a plot, but different, rows, cols
+                    plt.plot(x_train[:, 0], x_train[:, 2], "b.")  # x, y, color
+                    plt.title("x_train with Train_Test_Split Adaline")  # the title of our plt graph
+                    plt.subplot(211)  # just like a plot, but different, rows, cols
+                    plt.plot(x_test[:, 0], x_test[:, 2], "r.")  # x, y, color
+                    plt.title("x_test with Train_Test_Split Adaline")  # the title of our plt graph
+                    plt.tight_layout()  # to make it appear normal
+                    plt.show()  # showing the graph
+                    adaline(x_train, t_train, maxepochs, beta, minmse)  # calling the adaline for both x_train, t_train
+                    adaline(x_test, t_test, maxepochs, beta, minmse)  # calling the adaline for both x_test, t_test
+
             elif userInput == 3:
                 ttrain2 = [i if i != 0 else -1 for i in ttrain]  # changing 0 values to -1
                 ttest2 = [i if i != 0 else -1 for i in ttest]  # changing 0 values to -1
@@ -172,7 +205,7 @@ if __name__ == '__main__':
                         print(u)
                         predict2[i] = 1  # giving the proper value
                 plt.figure()  # creating new figure
-                plt.plot(predict2, 'ro', ttest2, 'b.')  # red circles for the predict array and blue dots for the ttrain2 array
+                plt.plot(predict2, 'ro', ttest2,
+                         'b.')  # red circles for the predict array and blue dots for the ttrain2 array
                 plt.title('least square solution view')  # just the title of our plt figure
                 plt.show()  # showing our plt figure
-
