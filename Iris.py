@@ -137,7 +137,7 @@ if __name__ == '__main__':
                     plt.subplot(211)  # just like a plot, but different, rows, cols
                     plt.plot(x_train[:, 0], x_train[:, 2], "b.")  # x, y, color
                     plt.title("x_train with Train_Test_Split Perceptron")  # the title of our plt graph
-                    plt.subplot(211)  # just like a plot, but different, rows, cols
+                    plt.subplot(212)  # just like a plot, but different, rows, cols
                     plt.plot(x_test[:, 0], x_test[:, 2], "r.")  # x, y, color
                     plt.title("x_test with Train_Test_Split Perceptron")  # the title of our plt graph
                     plt.tight_layout()  # to make it appear normal
@@ -163,7 +163,7 @@ if __name__ == '__main__':
                     plt.subplot(211)  # just like a plot, but different, rows, cols
                     plt.plot(x_train[:, 0], x_train[:, 2], "b.")  # x, y, color
                     plt.title("x_train with Train_Test_Split Adaline")  # the title of our plt graph
-                    plt.subplot(211)  # just like a plot, but different, rows, cols
+                    plt.subplot(212)  # just like a plot, but different, rows, cols
                     plt.plot(x_test[:, 0], x_test[:, 2], "r.")  # x, y, color
                     plt.title("x_test with Train_Test_Split Adaline")  # the title of our plt graph
                     plt.tight_layout()  # to make it appear normal
@@ -209,3 +209,56 @@ if __name__ == '__main__':
                          'b.')  # red circles for the predict array and blue dots for the ttrain2 array
                 plt.title('least square solution view')  # just the title of our plt figure
                 plt.show()  # showing our plt figure
+                for i in range(9):
+                    x_train, x_test, t_train, t_test = sklearn.model_selection.train_test_split(x, t,
+                                                                                                test_size=0.1)  # train_test_split
+                    t_train = [i if i != 0 else -1 for i in t_train]  # changing 0 values to -1
+                    t_test = [i if i != 0 else -1 for i in t_test]  # changing 0 values to -1
+                    plt.figure()  # creating a new view or something
+                    plt.subplot(211)  # just like a plot, but different, rows, cols
+                    plt.plot(x_train[:, 0], x_train[:, 2], "b.")  # x, y, color
+                    plt.title("x_train with Train_Test_Split Adaline")  # the title of our plt graph
+                    plt.subplot(212)  # just like a plot, but different, rows, cols
+                    plt.plot(x_test[:, 0], x_test[:, 2], "r.")  # x, y, color
+                    plt.title("x_test with Train_Test_Split Adaline")  # the title of our plt graph
+                    plt.tight_layout()  # to make it appear normal
+                    plt.show()  # showing the graph
+                    xtrain2 = numpy.linalg.pinv(x_train.astype(float))  # pinv = pseudo inverse
+                    w = numpy.zeros(len(x_train[0]))  # giving 0 to the w array
+                    predict = numpy.zeros(len(x_train))  # initializing
+                    for i in range(len(w)):  # for each of the 4 elements in our w array
+                        w[i] = sum(xtrain2[i, j] * t_train[j] for j in range(len(x_train)))  # finding the weights
+                    for i in range(len(x_train)):  # for each pattern
+                        u = sum(w[j] * x_train[i, j] for j in range(len(w)))  # initializing the stimulation
+                        if u < 0:
+                            predict[i] = -1  # giving the proper value
+                        else:
+                            predict[i] = 1  # giving the proper value
+                    plt.figure()  # creating new figure
+                    plt.plot(predict, 'ro', t_train,
+                             'b.')  # red circles for the predict array and blue dots for the ttrain2 array
+                    plt.title('least square solution view')  # just the title of our plt figure
+                    plt.show()  # showing our plt figure
+                    # edw stamatise o kosmos
+                    xtest2 = numpy.linalg.pinv(x_test.astype(float))  # pinv = pseudo inverse
+                    w2 = numpy.zeros(len(x_test[0]))  # giving 0 to the w array
+                    predict2 = numpy.zeros(len(x_test))  # initializing
+                    for i in range(len(w2)):  # for each of the 4 elements in our w array
+                        w2[i] = sum(xtest2[i, j] * t_test[j] for j in range(len(x_test)))  # finding the weights
+                    for i in range(len(x_test)):  # for each pattern
+                        u = sum(w2[j] * x_test[i, j] for j in range(len(w2)))  # initializing the stimulation
+                        if u < 0:
+                            print(u)  # just a print
+                            predict2[i] = -1  # giving the proper value
+                        else:
+                            print(u)  # just a print
+                            predict2[i] = 1  # giving the proper value
+                    plt.figure()  # creating new figure
+                    plt.plot(predict2, 'ro', t_test,
+                             'b.')  # red circles for the predict array and blue dots for the ttrain2 array
+                    plt.title('least square solution view')  # just the title of our plt figure
+                    plt.show()  # showing our plt figure
+            elif userInput == 4:
+                break
+        ans = raw_input("Θέλετε να Συνεχίσετε(Y/n); ").lower()
+        # THIS IS THE END
