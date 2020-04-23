@@ -3,7 +3,7 @@ import pandas
 import numpy
 import matplotlib.pyplot as plt
 from pip._vendor.distlib.compat import raw_input
-
+import sklearn.model_selection
 
 def perceptron(x, t, maxepochs, beta):  # perceptron function
     w = numpy.random.randn(len(x[0]), 1)  # filling the w by random numbers
@@ -129,6 +129,7 @@ if __name__ == '__main__':
                 beta = float(raw_input('Beta:'))  # beta variable
                 perceptron(xtrain, ttrain, maxepochs, beta)  # calling the perceptron for both xtrain, ttrain
                 perceptron(xtest, ttest, maxepochs, beta)  # and xtest, ttest
+
             elif userInput == 2:
                 ttrain2 = [i if i != 0 else -1 for i in ttrain]  # changing 0 values to -1
                 ttest2 = [i if i != 0 else -1 for i in ttest]  # changing 0 values to -1
